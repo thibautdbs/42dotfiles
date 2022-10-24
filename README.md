@@ -1,5 +1,9 @@
 # 42dotfiles
 
+## Requirements
+
+1. Any [Nerd patched font](https://www.nerdfonts.com/), e.g. *FiraMono Nerd Font*.
+
 ## Instalation
 
 1. run ``` curl -sL 'https://raw.githubusercontent.com/thibautdbs/42dotfiles/master/install.sh' | sh ```
