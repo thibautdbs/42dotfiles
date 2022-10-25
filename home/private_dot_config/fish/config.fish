@@ -22,7 +22,6 @@ if status is-interactive;
             tmux attach -t default;
         else
 			set -x FISHLOGINSHELL 1
-			set -e MOTDSHOWN
             source "$HOME/.config/fish/profile.fish";
             exec tmux new-session -s default;
         end

@@ -5,9 +5,25 @@ function 42df
 	end
 	if test $argv[1] = 'fetch';
 		set gitcmd status --short --branch --porcelain=2;
-		chezmoi $chezmoiflags git -- fetch > /dev/null 2>&1;
-		if test -z (chezmoi $chezmoiflags git -- $gitcmd | grep 'branch.ab' | grep '\-0');
-			echo '42df update available, please run `42df update`.';
+		
+		echo -n '42df: fetching update  '
+		chezmoi $chezmoiflags git -- fetch > /dev/null 2>&1 &;
+		function on_exit --on-process-exit $last_pid;
+			set -g -e SPIN;
+		end
+		set -g SPIN;
+		while set -q SPIN;
+			for c in '|' '/' '-' '\\';
+				printf "\b%c \b" $c; 
+				sleep 0.1;
+			end
+		end
+		printf '\r'; tput el;
+
+		if test -z (chezmoi $chezmoiflags git -- $gitcmd | grep -e 'branch.ab' -e '\-0');
+			echo '42df: update available, update with `42df update`.';
+		else
+			echo '42df: up to date';
 		end
 	end
 	if test $argv[1] = 'update';
