@@ -11,6 +11,7 @@
 require("plugins");
 
 vim.opt.belloff = 'all';
+vim.opt.clipboard = 'unnamed';
 
 vim.opt.tabstop = 4;
 vim.opt.shiftwidth = 4;
