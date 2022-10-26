@@ -10,6 +10,11 @@
 -- ##                                                                          #
 -- #############################################################################
 
+
+-- #############################################################################
+-- ## packer                                                                   #
+-- #############################################################################
+
 local ensure_packer = function()
 	local fn = vim.fn;
 	local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim';
@@ -21,7 +26,7 @@ local ensure_packer = function()
 	return false;
 end
 
-local packer_bootstrap = ensure_packer()
+local packer_bootstrap = ensure_packer();
 
 return require('packer').startup({
 	function(use)
@@ -39,12 +44,15 @@ return require('packer').startup({
 		};
 		use('numToStr/Comment.nvim');
 		use('lukas-reineke/indent-blankline.nvim');
-		use({ 'ibhagwan/fzf-lua',
+		use({ 
+			'ibhagwan/fzf-lua',
 			requires = { 'kyazdani42/nvim-web-devicons' }
 		});
 		use({
 			'nvim-treesitter/nvim-treesitter',
-			run = function() require('nvim-treesitter.install').update({ with_sync = true }); end,
+			run = function() 
+				require('nvim-treesitter.install').update({ with_sync = true }); 
+			end
 		});
 		use('neovim/nvim-lspconfig');
 		use('p00f/clangd_extensions.nvim');
@@ -64,12 +72,14 @@ return require('packer').startup({
 		-- Automatically set up your configuration after cloning packer.nvim
 		-- Put this at the end after all plugins
 		if packer_bootstrap then
-			require('packer').sync()
+			require('packer').sync();
 		end
 	end,
 	config = {
+		auto_clean = true,
+  		compile_on_sync = true,
 		display = {
-			open_fn = require('packer.util').float,
+			open_fn = require('packer.util').float
 		}
   	}
-})
+});
