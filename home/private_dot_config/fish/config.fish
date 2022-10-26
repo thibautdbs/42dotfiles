@@ -19,7 +19,7 @@ if status is-interactive;
         tmux has-session > /dev/null 2>&1;
         if test $status -eq 0;
 			tmux new-window -t default;
-            tmux attach -t default;
+            exec tmux attach -t default;
         else
 			set -x FISHLOGINSHELL 1
             source "$HOME/.config/fish/profile.fish";
