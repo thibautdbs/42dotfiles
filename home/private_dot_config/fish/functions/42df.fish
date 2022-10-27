@@ -7,7 +7,7 @@ function 42df
 		set gitcmd status --short --branch --porcelain=2;
 		
 		echo -n '42df: fetching update  '
-		chezmoi $chezmoiflags git -- fetch > /dev/null 2>&1 &;
+		command chezmoi $chezmoiflags git -- fetch > /dev/null 2>&1 &;
 		function on_exit --on-process-exit $last_pid;
 			set -g -e SPIN;
 		end
