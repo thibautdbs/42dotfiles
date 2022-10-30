@@ -1,0 +1,35 @@
+# everforest-dark theme
+# inspired from https://github.com/sainnhe/dotfiles/blob/master/.tmux/tmuxline/everforest-dark.tmux.conf
+
+SOFTGREEN=#999f93
+LIGHTGREEN=#a7c080
+LIGHTGRAY=#4a555b
+GRAY=#2f383e
+DARKGRAY=#374247
+
+FONTSTYLE=nobold,nounderscore,noitalics
+
+TOPLEFT=
+DOWNRIGHT=
+
+set -g status-justify "centre"
+set -g status "on"
+set -g status-left-style "none"
+set -g message-command-style "fg=$SOFTGREEN,bg=$LIGHTGRAY"
+set -g status-right-style "none"
+set -g pane-active-border-style "fg=$LIGHTGREEN"
+set -g status-style "none,bg=$DARKGRAY"
+set -g message-style "fg=$SOFTGREEN,bg=$LIGHTGRAY"
+set -g pane-border-style "fg=$LIGHTGRAY"
+set -g status-right-length "100"
+set -g status-left-length "100"
+
+setw -g window-status-activity-style "none,fg=$LIGHTGREEN,bg=$DARKGRAY"
+setw -g window-status-separator ""
+setw -g window-status-style "none,fg=$SOFTGREEN,bg=$DARKGRAY"
+
+set -g status-left "#[fg=$GRAY,bg=$LIGHTGREEN] #S #[fg=$LIGHTGREEN,bg=$LIGHTGRAY,$FONTSTYLE]$TOPLEFT#[fg=$SOFTGREEN,bg=$LIGHTGRAY] %R #[fg=$LIGHTGRAY,bg=$DARKGRAY,$FONTSTYLE]$TOPLEFT"
+set -g status-right "#[fg=$LIGHTGRAY,bg=$DARKGRAY,$FONTSTYLE]$DOWNRIGHT#[fg=$SOFTGREEN,bg=$LIGHTGRAY] %a #[fg=$LIGHTGREEN,bg=$LIGHTGRAY,$FONTSTYLE]$DOWNRIGHT#[fg=$GRAY,bg=$LIGHTGREEN] #H #{prefix_highlight} "
+
+setw -g window-status-format "#[fg=$DARKGRAY,bg=$DARKGRAY,$FONTSTYLE]$TOPLEFT#[fg=$SOFTGREEN] #I  #W #[fg=$DARKGRAY,bg=$DARKGRAY,$FONTSTYLE]$TOPLEFT"
+setw -g window-status-current-format "#[fg=$DARKGRAY,bg=$LIGHTGRAY,$FONTSTYLE]$TOPLEFT#[fg=$SOFTGREEN,bg=$LIGHTGRAY] #I  #W #F #[fg=$LIGHTGRAY,bg=$DARKGRAY,$FONTSTYLE]$TOPLEFT"
