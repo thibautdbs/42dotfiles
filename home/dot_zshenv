@@ -8,13 +8,10 @@
 # ##                                                                           #
 # ##############################################################################
 
-ZDOTDIR="$HOME/.config/zsh"
-if [[ -o interactive ]];
-then
-	bin="$HOME/.local/share/42dotfiles/bin"
-	if [[ -z $FISHLOGINSHELL ]]
-	then
-		[[ -x "$bin/fish" ]] && exec "$bin/fish";
+ZDOTDIR="${HOME}/.config/zsh";
+if [[ -o interactive ]]; then
+	FISH="${HOME}/.local/share/42dotfiles/bin/fish";
+	if [[ -z "${DF42}" && -x "${FISH}" ]]; then
+		exec "${FISH}";
 	fi
-	[[ -x "$bin/starship" ]] && eval "$($bin/starship init zsh)";
 fi

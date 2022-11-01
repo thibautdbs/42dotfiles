@@ -4,22 +4,16 @@
 
 ################################################################################
 
-PROMPT="select tmux theme:"
+PROMPT="select tmux theme:";
 
 DOTFILES="${HOME}/.local/share/42dotfiles";
 
 BUILTIN_THEMES="${DOTFILES}/home/private_dot_config/tmux/themes";
 LOCAL_THEMES="${HOME}/.config/tmux/themes";
 
-FZF="${DOTFILES}/bin/fzf";
-FLAGS=(	--height='~100'				\
-		--preview-window='hidden'	\
-		--info='hidden'				\
-		--disabled					\
-		--select-1					\
-		--prompt="${PROMPT}" );
+SELECT="$(dirname $0)/select";
 
 ################################################################################
 
 THEMES="$( ls -1 "${BUILTIN_THEMES}"; ls -1 "${LOCAL_THEMES}"; )";
-echo "${THEMES}" | sort -u | "${FZF}" "${FLAGS[@]}";
+echo "${THEMES}" | sort -u | "${SELECT}" "${PROMPT}";
