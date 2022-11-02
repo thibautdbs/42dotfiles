@@ -7,7 +7,12 @@ end
 
 local startup = function(use)
 
-use('wbthomason/packer.nvim');
+use({
+	'wbthomason/packer.nvim',
+	config = function()
+		require('packer').init();
+	end
+});
 use('lewis6991/impatient.nvim');
 
 use({
@@ -56,25 +61,25 @@ use({
 -- #############################################################################
 -- #############################################################################
 
-use({ 'L3MON4D3/LuaSnip', opt = true });
-use({ 'neovim/nvim-lspconfig', opt = true });
-use({ 'hrsh7th/cmp-path', opt = true });
-use({ 'hrsh7th/cmp-buffer', opt = true });
-use({ 'hrsh7th/cmp-cmdline', opt = true });
-use({ 'hrsh7th/cmp-nvim-lsp', opt = true });
-use({ 'saadparwaiz1/cmp_luasnip', opt = true });
+use({ 'L3MON4D3/LuaSnip'});
+use({ 'neovim/nvim-lspconfig'});
+use({ 'hrsh7th/cmp-path'});
+use({ 'hrsh7th/cmp-buffer'});
+use({ 'hrsh7th/cmp-cmdline'});
+use({ 'hrsh7th/cmp-nvim-lsp'});
+use({ 'saadparwaiz1/cmp_luasnip'});
 use({
 	'hrsh7th/nvim-cmp',
-	opt = true,
-	event = 'VimEnter',
+	-- opt = true,
+	-- event = 'VimEnter',
 	config = function()
-		require("packer.load")({'LuaSnip'}, {}, _G.packer_plugins);
-		require("packer.load")({'nvim-lspconfig'}, {}, _G.packer_plugins);
-		require("packer.load")({'cmp-path'}, {}, _G.packer_plugins);
-		require("packer.load")({'cmp-buffer'}, {}, _G.packer_plugins);
-		require("packer.load")({'cmp-cmdline'}, {}, _G.packer_plugins);
-		require("packer.load")({'cmp_luasnip'}, {}, _G.packer_plugins);
-		require("packer.load")({'cmp-nvim-lsp'}, {}, _G.packer_plugins);
+		-- require("packer.load")({'LuaSnip'}, {}, _G.packer_plugins);
+		-- require("packer.load")({'nvim-lspconfig'}, {}, _G.packer_plugins);
+		-- require("packer.load")({'cmp-path'}, {}, _G.packer_plugins);
+		-- require("packer.load")({'cmp-buffer'}, {}, _G.packer_plugins);
+		-- require("packer.load")({'cmp-cmdline'}, {}, _G.packer_plugins);
+		-- require("packer.load")({'cmp_luasnip'}, {}, _G.packer_plugins);
+		-- require("packer.load")({'cmp-nvim-lsp'}, {}, _G.packer_plugins);
 
 		local cmp = require('cmp');
 		cmp.setup({
@@ -116,8 +121,8 @@ use({
 
 use({
 	'hrsh7th/cmp-nvim-lua',
-	opt = true,
-	ft = 'lua',
+	-- opt = true,
+	-- ft = 'lua',
 	config = function()
 		local cmp = require('cmp');
 		cmp.setup.filetype('lua', {
@@ -131,7 +136,7 @@ use({
 
 use({
 	'williamboman/mason.nvim',
-	opt = true,
+	-- opt = true,
 	run = function()
 		require('mason').setup();
 		vim.cmd('MasonInstall clangd');
@@ -139,10 +144,11 @@ use({
 });
 use({ 
 	'p00f/clangd_extensions.nvim',
-	opt = true,
-	ft = 'c',
+	-- opt = true,
+	-- after = 'nvim-cmp',
+	-- ft = 'c',
 	config = function()
-		require("packer.load")({'mason.nvim'}, {}, _G.packer_plugins);
+		-- require("packer.load")({'mason.nvim'}, {}, _G.packer_plugins);
 		require('mason').setup();
 
 		local capabilities = require('cmp_nvim_lsp').default_capabilities();
