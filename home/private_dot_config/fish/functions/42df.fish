@@ -27,7 +27,7 @@ function 42df
 		end
 	end
 	if test $argv[1] = 'update';
-		command chezmoi $chezmoiflags update
+		command chezmoi $chezmoiflags update --init
 	end
 
 	if test $argv[1] = 'init';

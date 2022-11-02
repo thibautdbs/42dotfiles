@@ -2,4 +2,5 @@
 
 # bootstrap.lua hash: {{ include "private_dot_config/nvim/lua/bootstrap.lua" | sha256sum }}
 
+echo "updating nvim...";
 nvim -u NORC --headless -c "autocmd User PackerComplete quitall" -c "lua require([[bootstrap]])"
