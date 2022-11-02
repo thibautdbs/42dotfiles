@@ -1,0 +1,12 @@
+#!/bin/bash
+
+FZF="${HOME}/.local/share/42dotfiles/bin/fzf";
+${FZF}	--height='~100'				\
+		--preview-window='hidden'	\
+		--info='hidden'				\
+		--disabled					\
+		--select-1					\
+		--prompt="${1}"             \
+        --delimiter='	'           \
+        --with-nth='1'              \
+        | cut --delimiter='	' --field='2';

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+SELECT="$(dirname $0)/select";
+PROMPT="motd should be printed..."
+
+cat <<- "EOF" | "${SELECT}" "${PROMPT}"
+once	true
+always	false
+EOF

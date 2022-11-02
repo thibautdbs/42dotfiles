@@ -27,6 +27,10 @@ function 42df
 		end
 	end
 	if test $argv[1] = 'update';
-		chezmoi $chezmoiflags update
+		command chezmoi $chezmoiflags update
+	end
+
+	if test $argv[1] = 'init';
+		command chezmoi $chezmoiflags init --apply
 	end
 end

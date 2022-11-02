@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+# Filter through lines from stdin using fzf
+
+################################################################################
+
+PROMPT="select tmux theme:";
+
+DOTFILES="${HOME}/.local/share/42dotfiles";
+
+BUILTIN_THEMES="${DOTFILES}/home/private_dot_config/tmux/themes";
+LOCAL_THEMES="${HOME}/.config/tmux/themes";
+
+SELECT="$(dirname $0)/select";
+
+################################################################################
+
+function lss() {
+	for dir in "$@"; do
+		ls -1 "${dir}" 2> /dev/null;
+	done
+}
+
+THEMES="$(lss "${BUILTIN_THEMES}" "${LOCAL_THEMES}")";
+echo "${THEMES}" | sort -u | "${SELECT}" "${PROMPT}";

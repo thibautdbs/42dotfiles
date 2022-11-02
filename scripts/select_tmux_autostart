@@ -1,0 +1,9 @@
+#!/bin/bash
+
+SELECT="$(dirname $0)/select";
+PROMPT="autostart tmux ?";
+
+cat <<- "EOF" | "${SELECT}" "${PROMPT}"
+yes	true
+no	false
+EOF
