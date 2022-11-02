@@ -15,5 +15,11 @@ SELECT="$(dirname $0)/select";
 
 ################################################################################
 
-THEMES="$( ls -1 "${BUILTIN_THEMES}"; ls -1 "${LOCAL_THEMES}"; )";
+function lss() {
+	for dir in "$@"; do
+		ls -1 "${dir}" 2> /dev/null;
+	done
+}
+
+THEMES="$(lss "${BUILTIN_THEMES}" "${LOCAL_THEMES}")";
 echo "${THEMES}" | sort -u | "${SELECT}" "${PROMPT}";
