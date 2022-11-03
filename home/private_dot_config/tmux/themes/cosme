@@ -1,25 +1,26 @@
 # cosme theme
 # inspired from https://github.com/beikome/cosme.vim
 
+BLUE=#acc8ff
 PURPLE=#dfd7ff
 PINK=#ffafd7
 PALEPINK=#ffd7ff
 GREEN=#afffd7
 SALMON=#ffaf87
-DARKGRAY=#444444
-LIGHTGRAY=#1c1c1c
+LIGHTGRAY=#444444
+DARKGRAY=#1c1c1c
 
-FONTSTYLE=nobold,nounderscore,noitalics
+FONTSTYLE=$FONTSTYLE
 
 set -g status-justify "centre"
 set -g status "on"
 set -g status-left-style "none"
-set -g message-command-style "fg=$GREEN,bg=$LIGHTGRAY"
+set -g message-command-style "fg=$GREEN,bg=$DARKGRAY"
 set -g status-right-style "none"
 set -g pane-active-border-style "fg=$PURPLE"
-set -g status-style "none,bg=$LIGHTGRAY"
-set -g message-style "fg=$GREEN,bg=$LIGHTGRAY"
-set -g pane-border-style "fg=$LIGHTGRAY"
+set -g status-style "none,bg=$DARKGRAY"
+set -g message-style "fg=$GREEN,bg=$DARKGRAY"
+set -g pane-border-style "fg=$DARKGRAY"
 set -g status-right-length "100"
 set -g status-left-length "100"
 
@@ -27,7 +28,10 @@ setw -g window-status-activity-style "none,fg=$PURPLE,bg=$LIGHTGRAY"
 setw -g window-status-separator ""
 setw -g window-status-style "none,fg=$GREEN,bg=$LIGHTGRAY"
 
-set -g status-left "#[fg=$DARKGRAY,bg=$PURPLE] #S #[fg=$PURPLE,bg=$GREEN,nobold,nounderscore,noitalics]#[fg=$DARKGRAY,bg=$GREEN] %R #[fg=$GREEN,bg=$LIGHTGRAY,nobold,nounderscore,noitalics]"
-set -g status-right "#[fg=$GREEN,bg=$LIGHTGRAY,nobold,nounderscore,noitalics]#[fg=$LIGHTGRAY,bg=$GREEN] %a #[fg=$PURPLE,bg=$GREEN,nobold,nounderscore,noitalics]#[fg=$DARKGRAY,bg=$PURPLE] #H #{prefix_highlight} "
-setw -g window-status-format "#[fg=$LIGHTGRAY,bg=$LIGHTGRAY,nobold,nounderscore,noitalics]#[fg=$LIGHTGRAY] #I  #W #[fg=$LIGHTGRAY,bg=$LIGHTGRAY,nobold,nounderscore,noitalics]"
-setw -g window-status-current-format "#[fg=$LIGHTGRAY,bg=$SALMON,nobold,nounderscore,noitalics]#[fg=$DARKGRAY,bg=$SALMON] #I  #W #F #[fg=$SALMON,bg=$LIGHTGRAY,nobold,nounderscore,noitalics]"
+set -g status-left "#[fg=$LIGHTGRAY,bg=$BLUE] #S #[fg=$BLUE,bg=$LIGHTGRAY,$FONTSTYLE]#[fg=$BLUE,bg=$LIGHTGRAY] %R #[fg=$LIGHTGRAY,bg=$DARKGRAY,$FONTSTYLE]"
+
+set -g status-right "#[fg=$LIGHTGRAY,bg=$DARKGRAY,$FONTSTYLE]#[fg=$BLUE,bg=$LIGHTGRAY,$FONTSTYLE] %a #[fg=$BLUE,bg=$LIGHTGRAY,$FONTSTYLE]#[fg=$LIGHTGRAY,bg=$BLUE] #H #{prefix_highlight} "
+
+setw -g window-status-format "#[fg=$DARKGRAY,bg=$LIGHTGRAY,$FONTSTYLE]#[fg=$PALEPINK] #I  #W #[fg=$LIGHTGRAY,bg=$DARKGRAY,$FONTSTYLE]"
+
+setw -g window-status-current-format "#[fg=$DARKGRAY,bg=$PINK,$FONTSTYLE]#[fg=$LIGHTGRAY,bg=$PINK] #I  #W #F #[fg=$PINK,bg=$DARKGRAY,$FONTSTYLE]"
