@@ -11,22 +11,6 @@ use({
 	'wbthomason/packer.nvim',
 	config = function()
 		require('packer').init();
-		local status, overwrite = pcall(require, 'overwrite');
-		if status then
-			local ow_grp = vim.api.nvim_create_augroup("init_overwrite", {});
-			vim.api.nvim_create_autocmd(
-				{"VimEnter"},
-				{
-					pattern = "*",
-					callback = function()
-						vim.api.nvim_del_augroup_by_name("init_overwrite");
-						overwrite.init();
-					end,
-					group = ow_grp
-				}
-			);
-			-- vim.cmd("autocmd VimEnter * lua require('overwrite')._init()");
-		end
 	end
 });
 use('lewis6991/impatient.nvim');

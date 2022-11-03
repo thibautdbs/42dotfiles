@@ -46,4 +46,20 @@ vim.api.nvim_create_autocmd(
 	}
 );
 
+local status, overwrite = pcall(require, 'overwrite');
+if status then
+	local ow_grp = vim.api.nvim_create_augroup("init_overwrite", {});
+	vim.api.nvim_create_autocmd(
+		{"VimEnter"},
+		{
+			pattern = "*",
+			callback = function()
+				vim.api.nvim_del_augroup_by_name("init_overwrite");
+				overwrite.init();
+			end,
+			group = ow_grp
+		}
+	);
+end
+
 
