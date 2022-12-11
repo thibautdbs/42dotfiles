@@ -24,7 +24,7 @@ main()
 	git -C "${FTDOTDIR}" remote set-url origin "${PULLURL}";
 	git -C "${FTDOTDIR}" remote set-url --push origin "${PUSHURL}";
 
-	${FTDOTDIR}/42df config;
+	${FTDOTDIR}/bin/42df config;
 }
 
 main;
