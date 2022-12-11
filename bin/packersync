@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+nvim -u NORC --headless -c 'autocmd User PackerComplete quitall' -c 'lua require([[bootstrap]])' $argv
