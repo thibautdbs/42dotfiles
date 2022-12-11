@@ -10,8 +10,8 @@
 
 ZDOTDIR="${HOME}/.config/zsh";
 if [[ -o interactive ]]; then
-	FISH="${HOME}/.local/share/42dotfiles/bin/fish";
-	if [[ -z "${DF42}" && -x "${FISH}" ]]; then
-		exec "${FISH}";
+	FTDF="${HOME}/.local/share/42dotfiles/bin/42df";
+	if [[ -x "${FTDF}" ]]; then
+		exec ${FTDF} startup;
 	fi
 fi

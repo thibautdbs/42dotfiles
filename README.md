@@ -6,7 +6,7 @@
 
 ## Instalation
 
-1. run ``` curl -sL 'https://raw.githubusercontent.com/thibautdbs/42dotfiles/master/install.sh' | sh ```
+1. run ``` curl -sL 'https://raw.githubusercontent.com/thibautdbs/42dotfiles/master/install.sh' | bash ```
 2. restart shell session
 
 ## update

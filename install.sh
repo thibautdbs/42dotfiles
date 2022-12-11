@@ -1,7 +1,30 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-dir="$HOME/.local/share/42dotfiles"
+# ##############################################################################
+# ## config                                                                    #
+# ##############################################################################
 
-git clone https://github.com/thibautdbs/42dotfiles.git $dir
+FTDOTDIR="${HOME}/.local/share/42dotfiles";
 
-"$dir/bin/chezmoi" --source "$dir" init --apply
+PULLURL="https://github.com/thibautdbs/42dotfiles.git";
+PUSHURL="git@github.com:thibautdbs/42dotfiles.git";
+
+# ##############################################################################
+# ## Main                                                                      #
+# ##############################################################################
+
+main()
+{
+	if [ -d "${FTDOTDIR}" ]; then
+		echo "error: ${FTDOTDIR} already exists" >&2;
+		exit 1;
+	fi
+	git clone -o "origin" -b "master" --depth 1 ${PULLURL} ${FTDOTDIR};
+
+	git -C "${FTDOTDIR}" remote set-url origin "${PULLURL}";
+	git -C "${FTDOTDIR}" remote set-url --push origin "${PUSHURL}";
+
+	${FTDOTDIR}/42df config;
+}
+
+main;
