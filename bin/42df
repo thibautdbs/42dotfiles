@@ -13,7 +13,7 @@ FTDOTDIR="${HOME}/.local/share/42dotfiles";
 utils_addpath()
 {
 	if [ -d ${1} ]; then
-		export PATH="${PATH}:${1}";
+		export PATH="${1}:${PATH}";
 	fi
 }
 
@@ -95,8 +95,8 @@ cmd_startup()
 
 main()
 {
-	utils_addpath "${FTDOTDIR}/bin/";
-	utils_addpath "${FTDOTDIR}/scripts/";
+	utils_addpath "${FTDOTDIR}/bin";
+	utils_addpath "${FTDOTDIR}/scripts";
 
 	case "${@}" in
 		"fetch") cmd_fetch;;
