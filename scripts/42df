@@ -38,12 +38,12 @@ my::git()
 
 my::git::fetch()
 {
-	my::git fetch origin master:refs/remotes/origin/master >/dev/null 2>&1;
+	my::git fetch origin "${BRANCH}:refs/remotes/origin/${BRANCH}" >/dev/null 2>&1;
 }
 
 my::git::merge()
 {
-	my::git merge origin/master >/dev/null 2>&1;
+	my::git merge "origin/${BRANCH}" >/dev/null 2>&1;
 }
 
 my::git::put_incoming_changes()
@@ -52,14 +52,14 @@ my::git::put_incoming_changes()
 		--graph											\
 		--date=format:'%F %R'							\
 		--pretty=format:'%Cblue%ad%Creset: %s%n%b'		\
-		master..origin/master;
+		"${BRANCH}..origin/${BRANCH}";
 }
 
 my::git::is_behind()
 {
-	declare -r LOCAL="$(my::git rev-parse 'master')";
-	declare -r REMOTE="$(my::git rev-parse 'origin/master')";
-	declare -r MERGE="$(my::git merge-base 'master' 'origin/master')";
+	declare -r LOCAL=$(my::git rev-parse "${BRANCH}");
+	declare -r REMOTE=$(my::git rev-parse "origin/${BRANCH}");
+	declare -r MERGE=$(my::git merge-base "${BRANCH}" "origin/${BRANCH}");
 
 	if [ "${REMOTE}" = "${LOCAL}" ]; then
 		return 1; #local repo is up-to-date
@@ -144,10 +144,7 @@ my::main()
 		exit 1;
 	fi
 
-	if [[ "$(my::git branch --show-current)" != 'master' ]]; then
-		echo "Error. HEAD is not pointing at master" >&2;
-		exit 1;
-	fi
+	readonly BRANCH=$(my::git branch --show-current);
 
 	case "${1}" in
 		update)
