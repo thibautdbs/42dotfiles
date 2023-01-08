@@ -19,7 +19,7 @@ my::fzf()
 
 THEME=$(										\
 	find "${BUILTINS}" "${LOCALS}" -type f		\
-		| xargs basename						\
+		| xargs -L1 basename					\
 		| sort -u								\
 		| my::fzf "select a theme for tmux:"	\
 );
