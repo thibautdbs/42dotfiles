@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+
+chezmoi()
+{
+	#assert chezmoi exists in path.
+	if ! whence -p chezmoi >/dev/null 2>&1; then
+		echo "Error: couldn't find 'chezmoi'." >&2;
+		return 1;
+	fi
+
+	declare -r DOTDIR="${HOME}/.local/share/42dotfiles/";
+	declare -r CONFIG="${HOME}/.config/42dotfiles/config.toml";
+
+	#use builtin cd if cmd is "cd".
+	if [[ "${1}" == "cd" ]]; then
+		builtin cd "${DOTDIR}";
+		return;
+	fi
+
+	declare -a ARGS=(				\
+		--source "${DOTDIR}"		\
+		--progress					\
+		--config "${CONFIG}"		\
+	);
+
+	if [[ "${1}" == (init|apply|update) ]]; then
+		ARGS+=(--config-path "${CONFIG}");
+	fi
+
+	command chezmoi	"${ARGS[@]}" "${@}";
+}

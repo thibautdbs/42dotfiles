@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+
+take()
+{
+	if [[ ${#} -ne 1 ]]; then
+		echo "Error: expected one argument." >&2;
+		return 1;
+	fi
+
+	local readonly DIR=${1};
+
+	if [[ ! -e "${DIR}" ]]; then
+		mkdir -p ${DIR};
+		cd ${DIR};
+		return 0;
+	fi
+
+	if [[ ! -d "${DIR}" ]]; then
+		echo "Error: '${DIR}' is not a directory." >&2;
+		return 1;
+	fi
+
+	cd ${DIR};
+}

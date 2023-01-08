@@ -1,0 +1,70 @@
+#!/usr/bin/env zsh
+
+# ##############################################################################
+# ## zshrc                                                                     #
+# ##############################################################################
+
+################################################################################
+### PATH
+
+__add_path()
+{
+	export PATH="${1}:${PATH}";
+}
+
+__add_path "$HOME/bin/";
+__add_path "$HOME/scripts/";
+__add_path "$HOME/.local/bin/";
+__add_path "$HOME/.local/share/42dotfiles/bin/";
+__add_path "$HOME/.local/share/42dotfiles/scripts/";
+
+################################################################################
+### FUNCTIONS
+
+FPATH="${ZDOTDIR}/functions:${FPATH}";
+
+for FILE in ${ZDOTDIR}/functions/*(N); do
+	autoload -Uz "${FILE}";
+done
+
+################################################################################
+### ZIMFW
+
+ZIM_HOME="$HOME/.cache/zim";
+
+# Download zimfw plugin manager if missing.
+if [[ ! -e "${ZIM_HOME}/zimfw.zsh" ]]; then
+	mkdir -p "${ZIM_HOME}" && wget -nv -O "${ZIM_HOME}/zimfw.zsh"			\
+		https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh;
+fi
+
+# Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
+if [[ ! "${ZIM_HOME}/init.zsh" -nt "${ZDOTDIR:-${HOME}}/.zimrc" ]]; then
+	source "${ZIM_HOME}/zimfw.zsh" init -q;
+fi
+
+# Initialize modules.
+source "${ZIM_HOME}/init.zsh";
+
+################################################################################
+### CONF.D
+
+#compile zhrc if necessary.
+if [[ ! "${ZDOTDIR}/.zshrc.zwc" -nt "${ZDOTDIR}/.zshrc" ]]; then
+	zcompile "${ZDOTDIR}/.zshrc";
+fi
+
+#compile scripts in conf.d/ (if necessary) and sources them.
+for FILE in ${ZDOTDIR}/conf.d/*.zsh(N); do
+	if [[ ! "${FILE}.zwc" -nt "${FILE}" ]]; then
+		zcompile "${FILE}";
+	fi
+	source "${FILE}";
+done
+
+#remove unused compiled scripts.
+for ZWC in ${ZDOTDIR}/conf.d/*.zsh.zwc(N); do
+	if [[ ! -e "${ZWC%.zwc}" ]]; then
+		rm -f "${ZWC}";
+	fi
+done

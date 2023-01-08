@@ -1,49 +1,24 @@
-{{- /**********************************************************************/ -}}
-{{- /** ustensils                                                         */ -}}
-{{- /**********************************************************************/ -}}
+# chezmoi:template:left-delimiter="#[["
+# chezmoi:template:right-delimiter=]]
+# chezmoi:template:missing-key=zero
 
-{{- $homeDir := .chezmoi.homeDir -}}
-{{- $sourceDir := joinPath $homeDir ".local/share/42dotfiles" -}}
+#[[- /*********************************************************************/ -]]
+#[[- /*** header42                                                        */ -]]
 
-{{- $scripts := joinPath $sourceDir "scripts" -}}
+#[[- $login42 := output "__prompt_login42" (or .login42 "") | trim           -]]
+#[[- $email42 := output "__prompt_email42" $login42 (or .email42 "") | trim  -]]
 
-{{- /**********************************************************************/ -}}
-{{- /** header42                                                          */ -}}
-{{- /**********************************************************************/ -}}
+#[[- /*********************************************************************/ -]]
+#[[- /*** tmux                                                            */ -]]
 
-{{- $login42 := promptString "login42" (or .login42 "marvin") -}}
-{{- $email42 := promptString "email42" (or .email42 (print $login42 "@student.42angouleme.fr")) -}}
+#[[- $tmux_theme := output "__prompt_tmux_theme" | trim                      -]]
+#[[- $tmux_autostart := output "__prompt_tmux_autostart" | trim              -]]
 
-{{- /**********************************************************************/ -}}
-{{- /** motd                                                              */ -}}
-{{- /**********************************************************************/ -}}
-
-{{- $show_motd_once := output (joinPath $scripts "select_show_motd_once") | trim -}}
-
-{{- /**********************************************************************/ -}}
-{{- /** tmux                                                              */ -}}
-{{- /**********************************************************************/ -}}
-
-{{- $tmux_theme := output (joinPath $scripts "select_tmux_theme") | trim -}}
-{{- $tmux_autostart := output (joinPath $scripts "select_tmux_autostart") | trim -}}
-
-{{- /*####################################################################*/ -}}
-{{- /*####################################################################*/ -}}
-{{- /*####################################################################*/ -}}
-
-{{- /**********************************************************************/ -}}
-{{- /** template                                                          */ -}}
-{{- /**********************************************************************/ -}}
-
-sourceDir = {{ $sourceDir | quote }}
+#[[- /*********************************************************************/ -]]
+#[[- /*** template                                                        */ -]]
 
 [data]
-	login42 = {{ $login42 | quote }}
-	email42 = {{ $email42 | quote }}
-	tmux_autostart = {{ $tmux_autostart }}
-	tmux_theme = {{ $tmux_theme | quote }}
-	show_motd_once = {{ $show_motd_once }}
-
-[cd]
-	command = "fish"
-
+	login42 = #[[ $login42 | quote ]]
+	email42 = #[[ $email42 | quote ]]
+	tmux_theme = #[[ $tmux_theme | quote ]]
+	tmux_autostart = #[[ $tmux_autostart ]]

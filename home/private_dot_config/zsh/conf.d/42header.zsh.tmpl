@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# chezmoi:template:left-delimiter="#[["
+# chezmoi:template:right-delimiter=]]
+# chezmoi:template:missing-key=zero
+
+export USER=#[[ .login42 | quote ]];
+export MAIL=#[[ .email42 | quote ]];

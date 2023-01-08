@@ -1,14 +1,4 @@
--- #############################################################################
--- ##  _       _ _     _                                                       #
--- ## (_)     (_) |   | |                                                      #
--- ##  _ _ __  _| |_  | |_   _  __ _                                           #
--- ## | | '_ \| | __| | | | | |/ _` |                                          #
--- ## | | | | | | |_ _| | |_| | (_| |                                          #
--- ## |_|_| |_|_|\__(_)_|\__,_|\__,_|                                          #
--- ##                                                                          #
--- #############################################################################
-
-require('impatient');
+pcall(require, "impatient");
 
 vim.opt.belloff = 'all';
 vim.opt.clipboard = 'unnamed';
@@ -24,42 +14,26 @@ vim.opt.cc = '81';
 vim.g.mapleader = " ";
 
 -- switch between opt number absolute/hybrid in normal and insert mode
-local numbertogglegroup = vim.api.nvim_create_augroup("numbertoggle", {});
-vim.api.nvim_create_autocmd(
-	{ "BufEnter", "FocusGained", "InsertLeave" },
-	{
-		pattern = '*',
-		callback = function()
-			vim.wo.relativenumber = true;
-		end,
-		group = numbertogglegroup
-	}
-);
-vim.api.nvim_create_autocmd(
-	{ "BufLeave", "FocusLost", "InsertEnter" },
-	{
-		pattern = '*',
-		callback = function()
-			vim.wo.relativenumber = false;
-		end,
-		group = numbertogglegroup
-	}
-);
-
-local status, overwrite = pcall(require, 'overwrite');
-if status then
-	local ow_grp = vim.api.nvim_create_augroup("init_overwrite", {});
+(function()
+	local numbertogglegroup = vim.api.nvim_create_augroup("numbertoggle", {});
 	vim.api.nvim_create_autocmd(
-		{"VimEnter"},
+		{ "BufEnter", "FocusGained", "InsertLeave" },
 		{
-			pattern = "*",
+			pattern = '*',
 			callback = function()
-				vim.api.nvim_del_augroup_by_name("init_overwrite");
-				overwrite.init();
+				vim.wo.relativenumber = true;
 			end,
-			group = ow_grp
+			group = numbertogglegroup
 		}
 	);
-end
-
-
+	vim.api.nvim_create_autocmd(
+		{ "BufLeave", "FocusLost", "InsertEnter" },
+		{
+			pattern = '*',
+			callback = function()
+				vim.wo.relativenumber = false;
+			end,
+			group = numbertogglegroup
+		}
+	);
+end)();

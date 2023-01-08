@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+declare -r LOGIN="${1:-marvin}";
+
+declare -r DEFAULT="${2:-${LOGIN}@student.42angouleme.fr}";
+
+read -r -p "email 42: " -e -i "${DEFAULT}" EMAIL </dev/tty;
+
+echo "${EMAIL}";

@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+################################################################################
+### TOOLS
+
+my::assert_command_exists()
+{
+	if ! type "${1}" >/dev/null 2>&1; then
+		echo "ERROR: couldn't find '${1}'." 2>&1;
+		exit 1;
+	fi
+}
+
+################################################################################
+### WRAPPERS
+
+my::fd()
+{
+	local SPATH=$(git rev-parse --show-prefix 2>/dev/null);
+	local SROOT=$(git rev-parse --show-cdup 2>/dev/null);
+
+	SPATH=${SPATH:-.};
+	SROOT=${SROOT:-.};
+
+	if [[ -f ${SROOT}/.nonoignore ]]; then
+		local IGNOREFLAG="--ignore-file .nonoignore";
+	fi
+
+	cd ${SROOT} && fd ${IGNOREFLAG} --search-path ${SPATH} ${@} \
+		| xargs -L1 -r realpath -m --relative-to=${SPATH};
+}
+
+################################################################################
+### MAIN
+
+my::norminette()
+{
+	local readonly FILES=$(my::fd -g '{*.c,*.h}');
+	if [[ -n "${FILES}" ]]; then
+		norminette ${FILES} | grep Error;
+	fi
+}
+
+my::main()
+{
+	my::assert_command_exists norminette;
+	my::assert_command_exists git;
+	my::assert_command_exists fd;
+
+	if [[ -z "$(my::norminette | tee /dev/tty)" ]]; then
+		echo "Everything is ok.";
+	fi
+}
+
+my::main ${@};

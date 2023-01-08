@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+# chezmoi:template:left-delimiter="#[["
+# chezmoi:template:right-delimiter=]]
+# chezmoi:template:missing-key=zero
+
+# ##############################################################################
+# ## tmux auto-start                                                           #
+# ##############################################################################
+
+#[[ if .tmux_autostart                                                       -]]
+
+if [[ -n ${TMUX+1} ]] || ! type tmux >/dev/null 2>&1; then
+	return;
+fi
+
+if ! tmux has-session -t=42 >/dev/null 2>&1; then
+	exec tmux new-session -s 42;
+fi
+
+if [[ -z "$(tmux list-clients -t=42)" ]]; then
+	exec tmux attach -t=42;
+fi
+
+#[[- end                                                                     -]]

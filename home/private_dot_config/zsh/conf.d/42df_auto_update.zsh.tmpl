@@ -1,0 +1,45 @@
+#!/usr/bin/env zsh
+# chezmoi:template:left-delimiter="#[["
+# chezmoi:template:right-delimiter=]]
+# chezmoi:template:missing-key=zero
+
+if ! type 42df >/dev/null 2>&1; then
+	return;
+fi
+
+#[[ if .tmux_autostart                                                       -]]
+
+if type tmux >/dev/null 2>&1; then
+
+	#do not fetch update if outside of tmux.
+	if [[ -z "${TMUX}" ]]; then
+		return;
+	fi
+
+	#do not fetch if it has been done in current tmux session.
+	if [[ -n "${FTDF_AUTOFETCH}" ]]; then
+		return;
+	fi
+
+	tmux set-environment FTDF_AUTOFETCH 1;
+fi
+
+#[[ end                                                                      -]]
+
+function()
+{
+	declare -r FILE="$HOME/.cache/42dotfiles/lastfetch";
+
+	declare -r LAST=$(cat "${FILE}" 2>/dev/null);
+	declare -r TODAY="$(date +%Y%m%d)";
+
+	#do not fetch if it has been done today.
+	if [[ "${LAST}" == "${TODAY}" ]]; then
+		return;
+	fi
+
+	echo "42df auto-update:";
+	42df update;
+	mkdir -p "$(dirname $FILE)";
+	echo "${TODAY}" >"${FILE}";
+}
