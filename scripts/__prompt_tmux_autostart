@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+my::fzf()
+{
+	command fzf									\
+		--preview-window='hidden'				\
+		--layout='reverse'						\
+		--info='hidden'							\
+		--height='~100'							\
+		--with-nth='1'							\
+		--disabled								\
+		--prompt="${1}";
+}
+
+RES=$(
+	cat <<- "EOF" | my::fzf "autostart tmux ?"
+		yes
+		no
+	EOF
+);
+
+case ${RES} in
+	yes)
+		echo "true";
+		;;
+	no)
+		echo "false";
+		;;
+esac
+
+echo "tmux autostart: ${RES}" >/dev/tty;

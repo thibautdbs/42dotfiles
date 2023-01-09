@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if ! type nvim >/dev/null 2>&1; then
+	echo "Error: couldn't find nvim." >&2;
+fi
+
+nvim 											\
+	-u NORC										\
+	--headless									\
+	-c 'autocmd User PackerComplete quitall'	\
+	-c 'lua require([[startup]])';

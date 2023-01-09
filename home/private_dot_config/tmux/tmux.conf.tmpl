@@ -8,17 +8,26 @@
 # ##                                                                           #
 # ##############################################################################
 
+# chezmoi:template:left-delimiter="#[["
+# chezmoi:template:right-delimiter=]]
+# chezmoi:template:missing-key=zero
+
 ################################################################################
 ## options                                                                     #
 ################################################################################
 set-window-option -g aggressive-resize on
-set -g default-terminal "xterm-256color"
-set -g default-command "fish"
+set -g default-command "zsh"
 
 set -g mouse on
 
 set -g base-index 1
 setw -g pane-base-index 1
+
+### nvim requirements
+set -sa terminal-overrides ',xterm-256color:RGB'
+set -g default-terminal "tmux-256color"
+set -g focus-events on
+set -sg escape-time 10
 
 ################################################################################
 ## bindings                                                                    #
@@ -38,9 +47,8 @@ bind v split-window -v -c "#{pane_current_path}"
 bind H split-window -h -b -c "#{pane_current_path}"
 bind V split-window -v -b -c "#{pane_current_path}"
 
-{{ if (ne .tmux_theme "") -}}
 ################################################################################
 ## theme                                                                       #
 ################################################################################
-source {{ joinPath "$HOME/.config/tmux/themes" .tmux_theme | quote }}
-{{- end }}
+
+source "${HOME}/.config/tmux/themes/#[[ .tmux_theme ]]"

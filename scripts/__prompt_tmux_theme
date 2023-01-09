@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+declare -r DOTDIR="${HOME}/.local/share/42dotfiles";
+
+declare -r BUILTINS="${DOTDIR}/home/private_dot_config/tmux/themes";
+declare -r LOCALS="${HOME}/.config/tmux/themes";
+
+my::fzf()
+{
+	command fzf									\
+		--preview-window='hidden'				\
+		--layout='reverse'						\
+		--info='hidden'							\
+		--height='~100'							\
+		--with-nth='1'							\
+		--disabled								\
+		--prompt="${1}";
+}
+
+THEME=$(										\
+	find "${BUILTINS}" "${LOCALS}" -type f		\
+		| xargs -L1 basename					\
+		| sort -u								\
+		| my::fzf "select a theme for tmux:"	\
+);
+
+echo "${THEME}";
+echo "tmux theme: ${THEME}" >/dev/tty;

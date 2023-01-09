@@ -1,0 +1,163 @@
+#!/usr/bin/env bash
+
+################################################################################
+### USAGE
+
+my::put_usage()
+{
+	cat <<-EOF
+		usage: 42df <update|config>
+	EOF
+}
+
+################################################################################
+### SETUP
+
+my::use_path()
+{
+	if [[ -d "${1}" ]]; then
+		export PATH="${1}:${PATH}";
+	fi
+}
+
+my::assert_command_exists()
+{
+	if ! type "${1}" >/dev/null 2>&1; then
+		echo "Error: couldn't find '${1}'" >&2;
+		exit 1;
+	fi
+}
+
+################################################################################
+### GIT UTILS
+
+my::git()
+{
+	git --no-pager -C "${DOTDIR}" "${@}";
+}
+
+my::git::fetch()
+{
+	my::git fetch origin "${BRANCH}:refs/remotes/origin/${BRANCH}" >/dev/null 2>&1;
+}
+
+my::git::merge()
+{
+	my::git merge "origin/${BRANCH}" >/dev/null 2>&1;
+}
+
+my::git::put_incoming_changes()
+{
+	my::git log											\
+		--graph											\
+		--date=format:'%F %R'							\
+		--pretty=format:'%Cblue%ad%Creset: %s%n%b'		\
+		"${BRANCH}..origin/${BRANCH}";
+}
+
+my::git::is_behind()
+{
+	declare -r LOCAL=$(my::git rev-parse "${BRANCH}");
+	declare -r REMOTE=$(my::git rev-parse "origin/${BRANCH}");
+	declare -r MERGE=$(my::git merge-base "${BRANCH}" "origin/${BRANCH}");
+
+	if [ "${REMOTE}" = "${LOCAL}" ]; then
+		return 1; #local repo is up-to-date
+	fi
+	if [ "${REMOTE}" = "${MERGE}" ]; then
+		return 1; #local repo is ahead of origin
+	fi
+	return 0;
+}
+
+################################################################################
+### CHEZMOI UTILS
+
+my::apply()
+{
+	declare -r CONFIG="${HOME}/.config/42dotfiles/config.toml";
+	chezmoi								\
+		--source "${DOTDIR}"			\
+		--config "${CONFIG}"			\
+		--progress						\
+		init							\
+		--config-path "${CONFIG}"		\
+		--apply;
+}
+
+################################################################################
+### CMDS
+
+my::cmd::update()
+{
+	my::git::fetch;
+	if my::git::is_behind; then
+		cat <<-EOF
+			Update available. Incoming changes:
+			===================================
+			
+			$(my::git::put_incoming_changes)
+			
+			===================================
+
+		EOF
+		declare RES;
+		read -r -N 1 -p 'Apply changes ? (y/N)' RES;
+		echo;
+		if [[ "${RES}" != 'y' ]]; then
+			echo 'Update ignored.';
+			exit 0;
+		fi
+		echo 'Applying changes';
+		my::git::merge;
+		my::apply;
+		echo "Done, restart shell session.";
+	else
+		echo "Up-to-date.";
+	fi
+	exit 0;
+}
+
+my::cmd::config()
+{
+	my::apply;
+	echo "Done, restart shell session.";
+	exit 0;
+}
+
+################################################################################
+### MAIN
+
+my::main()
+{
+	readonly DOTDIR="${HOME}/.local/share/42dotfiles";
+
+	my::use_path "${DOTDIR}/bin";
+	my::use_path "${DOTDIR}/scripts";
+
+	my::assert_command_exists git;
+	my::assert_command_exists chezmoi;
+
+	if [[ "${#}" -ne 1 ]]; then
+		echo "Error. Expected one argument" >&2;
+		my::put_usage;
+		exit 1;
+	fi
+
+	readonly BRANCH=$(my::git branch --show-current);
+
+	case "${1}" in
+		update)
+			my::cmd::update;
+			;;
+		config)
+			my::cmd::config;
+			;;
+		*)
+			echo "Error. Unknown command '${1}'" >&2;
+			exit 1;
+			;;
+	esac
+}
+
+my::main "${@}";

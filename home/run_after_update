@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+echo "Updating compiledb...";
+yes | pip install -U compiledb;
+
+echo "Updating nvim...";
+packersync;

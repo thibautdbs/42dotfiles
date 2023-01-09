@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+if ! type compiledb >/dev/null 2>&1; then
+	echo "Error: couldn't find compiledb." >&2;
+	exit 1;
+fi
+
+if [[ "$(git rev-parse --is-inside-work-tree)" == 'false' ]] 2>/dev/null; then
+	echo 'Error: not a git repository!' >&2;
+	exit 1;
+fi
+
+MAKEFLAGS=(						\
+	--print-directory			\
+	--always-make				\
+	--dry-run					\
+	--keep-going				\
+	--environment-overrides		\
+);
+
+DIR=$(git rev-parse --show-cdup);
+if [[ -n "${DIR}" ]]; then
+	cd "${DIR}" || exit 1;
+fi
+
+make "${MAKEFLAGS[@]}" "${@}" | compiledb;
+

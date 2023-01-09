@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# chezmoi:template:left-delimiter="#[["
+# chezmoi:template:right-delimiter=]]
+# chezmoi:template:missing-key=zero
+
+export GIT_EDITOR="vim";
+
+export GIT_AUTHOR_NAME=#[[ .login42 | quote ]];
+export GIT_COMMITTER_NAME=#[[ .login42 | quote ]];
+
+export GIT_AUTHOR_EMAIL=#[[ .email42 | quote ]];
+export GIT_COMMITTER_EMAIL=#[[ .email42 | quote ]];

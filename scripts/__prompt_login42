@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+declare -r DEFAULT="${1:-marvin}";
+
+read -r -p "login 42: " -e -i "${DEFAULT}" LOGIN </dev/tty;
+
+echo "${LOGIN}";
