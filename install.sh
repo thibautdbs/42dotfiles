@@ -32,4 +32,4 @@ my::main()
 	42df config;
 }
 
-main;
+my::main;
