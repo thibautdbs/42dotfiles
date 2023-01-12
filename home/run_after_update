@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
-echo "Updating compiledb...";
-yes | pip install -U compiledb;
+declare -r PURPLE="\033[0;35m";
+declare -r NC="\033[0m";
 
-echo "Updating nvim...";
+echo -e "${PURPLE}Updating compiledb...${NC}";
+yes | pip install -U compiledb;
+echo "";
+
+echo -e "${PURPLE}Updating nvim...${NC}";
 packersync;
+echo "";

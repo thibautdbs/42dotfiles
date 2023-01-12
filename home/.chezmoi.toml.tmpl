@@ -2,6 +2,8 @@
 # chezmoi:template:right-delimiter=]]
 # chezmoi:template:missing-key=zero
 
+#[[- writeToStdout "\033[0;35mConfiguration:\033[0m\n"                       -]]
+
 #[[- /*********************************************************************/ -]]
 #[[- /*** header42                                                        */ -]]
 
@@ -22,3 +24,6 @@
 	email42 = #[[ $email42 | quote ]]
 	tmux_theme = #[[ $tmux_theme | quote ]]
 	tmux_autostart = #[[ $tmux_autostart ]]
+
+
+#[[- writeToStdout "\n"                                                      -]]
