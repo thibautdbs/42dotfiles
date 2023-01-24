@@ -1,27 +1,49 @@
 #!/usr/bin/env bash
 
 if ! type compiledb >/dev/null 2>&1; then
-	echo "Error: couldn't find compiledb." >&2;
+	echo "cdb: couldn't find compiledb." >&2;
 	exit 1;
 fi
 
-if [[ "$(git rev-parse --is-inside-work-tree)" == 'false' ]] 2>/dev/null; then
-	echo 'Error: not a git repository!' >&2;
+my::exit_err()
+{
+	echo "mk: couldn't find \`Makefile\`." >&2;
 	exit 1;
+}
+
+my::make()
+{
+	declare -ra MAKEFLAGS=(			\
+		--print-directory			\
+		--always-make				\
+		--dry-run					\
+		--keep-going				\
+		--environment-overrides		\
+	);
+	make "${MAKEFLAGS[@]}" "${@}"
+}
+
+if [[ -f Makefile ]]; then
+	my::make "${@}" | compiledb;
+	exit "${?}";
 fi
 
-MAKEFLAGS=(						\
-	--print-directory			\
-	--always-make				\
-	--dry-run					\
-	--keep-going				\
-	--environment-overrides		\
-);
-
-DIR=$(git rev-parse --show-cdup);
-if [[ -n "${DIR}" ]]; then
-	cd "${DIR}" || exit 1;
+if [[ "$(git rev-parse --is-inside-work-tree)" == 'false' ]]; then
+	my::exit_err;
 fi
 
-make "${MAKEFLAGS[@]}" "${@}" | compiledb;
+CWD=$(pwd); readonly CWD;
+TOPLEVEL=$(git rev-parse --show-toplevel); readonly TOPLEVEL;
 
+while [[ "${TOPLEVEL}" != "$(pwd)" ]]; do
+	cd ..;
+	if [[ -f Makefile ]]; then
+		echo "cdb: using \`$(realpath --relative-to="${CWD}" "$(pwd)")/Makefile\`."
+		my::make "${@}" | cdb;
+		exit "${?}";
+	fi
+done
+
+my::exit_err;
+
+my::make "${@}" | compiledb;
