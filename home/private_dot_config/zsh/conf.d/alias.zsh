@@ -9,6 +9,10 @@ if [[ -f "${FTDF_ALIASES}" ]]; then
 	source "${FTDF_ALIASES}";
 fi
 
+if [[ ! -f "${FTDF_ALIASES}" && -f "${FTDF_ALIASES}.zwc" ]]; then
+	rm -f "${FTDF_ALIASES}.zwc";
+fi
+
 function __save_alias()
 {
 	declare -r KEY="${1/%=*/}";
@@ -16,7 +20,9 @@ function __save_alias()
 
 	declare -r TMP=$(mktemp "${FTDF_ALIASES}.bak.XXXXXXXX")
 
-	grep -v "^alias '${KEY}'=" "${FTDF_ALIASES}" > "${TMP}";
+	if [[ -f "${FTDF_ALIASES}" ]]; then
+		grep -v "^alias '${KEY}'=" "${FTDF_ALIASES}" > "${TMP}";
+	fi
 	echo "alias '${KEY}'='${VALUE}';" >> "${TMP}";
 	sort -u "${TMP}" > "${FTDF_ALIASES}";
 	rm -f "${TMP}";
@@ -26,6 +32,10 @@ function __unsave_alias()
 {
 	declare -r KEY="${1/%=*/}";
 	declare -r VALUE="${1/#*=/}";
+
+	if [[ ! -f "${FTDF_ALIASES}" ]]; then
+		return 0;
+	fi
 
 	declare -r TMP=$(mktemp "${FTDF_ALIASES}.bak.XXXXXXXX")
 
