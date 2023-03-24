@@ -1,30 +1,52 @@
 #!/usr/bin/env bash
 
-my::exit_err()
+function log()
 {
-	echo "mk: couldn't find \`Makefile\`." >&2;
+	echo "mk:" "$@";
+}
+
+function err()
+{
+	log "$@" >&2;
+}
+
+function require()
+{
+	command -v "$1" &>/dev/null || {
+		err "Couldn't run \`$1'";
+		exit 1;
+	}
+}
+
+################################################################################
+
+require make;
+
+if [[ -f Makefile ]]; then
+	log "Using \`Makefile'";
+	exec make "${@}";
+fi
+
+require git;
+
+[[ "$(git rev-parse --is-inside-work-tree)" == 'true' ]] &>/dev/null || {
+	err "Couldn't find \`Makefile' (is not a git repository)";
 	exit 1;
 }
 
-if [[ -f Makefile ]]; then
-	make "${@}";
-	exit "${?}";
-fi
+CWD="$(pwd)";
+readonly CWD;
 
-if [[ "$(git rev-parse --is-inside-work-tree)" == 'false' ]]; then
-	my::exit_err;
-fi
-
-CWD=$(pwd); readonly CWD;
-TOPLEVEL=$(git rev-parse --show-toplevel); readonly TOPLEVEL;
+TOPLEVEL="$(git rev-parse --show-toplevel)";
+readonly TOPLEVEL;
 
 while [[ "${TOPLEVEL}" != "$(pwd)" ]]; do
 	cd ..;
 	if [[ -f Makefile ]]; then
-		echo "mk: using \`$(realpath --relative-to="${CWD}" "$(pwd)")/Makefile\`."
-		make "${@}";
-		exit "${?}";
+		log "Using \`$(realpath --relative-to="${CWD}" "$(pwd)")/Makefile'.";
+		exec make "${@}";
 	fi
 done
 
-my::exit_err;
+err "Couldn't find \`Makefile' in repository";
+exit 1;
