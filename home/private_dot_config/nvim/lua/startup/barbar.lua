@@ -9,7 +9,7 @@ use({
 			auto_hide = false,
 			closable = true,
 			clickable = true,
-			icons = true
+			icons = { filetype = { enabled = true } }
 		});
 		vim.keymap.set('n', '<leader><left>', '<cmd>BufferPrevious<cr>');
 		vim.keymap.set('n', '<leader><right>', '<cmd>BufferNext<cr>');
